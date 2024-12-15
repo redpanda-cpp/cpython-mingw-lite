@@ -571,7 +571,7 @@ _winapi_CreateJunction_impl(PyObject *module, LPCWSTR src_path,
     tp.base.PrivilegeCount = 1;
     tp.base.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
     if (!AdjustTokenPrivileges(token, FALSE, &tp.base, sizeof(previousTp),
-                               &previousTp.base, &previousTpSize)) {
+                               &previousTp.base, (DWORD *)&previousTpSize)) {
         goto cleanup;
     }
 

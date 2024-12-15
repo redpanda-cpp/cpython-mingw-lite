@@ -39,6 +39,7 @@
 #  if defined(MS_WINDOWS_DESKTOP) || defined(MS_WINDOWS_SYSTEM)
 #    define HAVE_SYMLINK
 #  endif /* MS_WINDOWS_DESKTOP | MS_WINDOWS_SYSTEM */
+#  include <process.h>
 #endif
 
 #include "structmember.h"         // PyMemberDef
@@ -4961,7 +4962,7 @@ os__path_splitroot_impl(PyObject *module, path_t *path)
     }
 
     Py_BEGIN_ALLOW_THREADS
-    ret = PathCchSkipRoot(buffer, &end);
+    ret = PathCchSkipRoot(buffer, (const wchar_t **)&end);
     Py_END_ALLOW_THREADS
     if (FAILED(ret)) {
         result = Py_BuildValue("sO", "", path->object);
