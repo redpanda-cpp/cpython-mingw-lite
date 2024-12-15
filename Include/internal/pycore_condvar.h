@@ -35,6 +35,7 @@
 #  define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>              // CRITICAL_SECTION
+#undef _POSIX_THREADS
 
 /* options */
 /* emulated condition variables are provided for those that want

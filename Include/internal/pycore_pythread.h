@@ -16,6 +16,10 @@ extern "C" {
                             && !defined(_POSIX_SEMAPHORES))
 #  include <unistd.h>             // _POSIX_THREADS, _POSIX_SEMAPHORES
 #endif
+#ifdef NT_THREADS
+#  undef _POSIX_THREADS
+#endif
+
 #if (defined(HAVE_PTHREAD_H) && !defined(_POSIX_THREADS) \
                              && !defined(_POSIX_SEMAPHORES))
    // This means pthreads are not implemented in libc headers, hence the macro
