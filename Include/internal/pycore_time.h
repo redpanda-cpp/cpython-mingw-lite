@@ -58,9 +58,7 @@ extern "C" {
 #endif
 
 
-#ifdef __clang__
 struct timeval;
-#endif
 
 #define _SIZEOF_PYTIME_T 8
 

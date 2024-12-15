@@ -169,3 +169,8 @@ Python/frozen_modules/MANIFEST
 /python
 !/Python/
 
+# redpanda-cpp: xmake for mingw-lite
+/.xmake
+/x-build
+/zlib
+/zlib-*

@@ -3522,6 +3522,7 @@ _PySys_InitCore(PyThreadState *tstate, PyObject *sysdict)
     SET_SYS("dllhandle", PyLong_FromVoidPtr(PyWin_DLLhModule));
     SET_SYS_FROM_STRING("winver", PyWin_DLLVersionString);
 #endif
+    SET_SYS_FROM_STRING("winver", "3.13");
 #ifdef ABIFLAGS
     SET_SYS_FROM_STRING("abiflags", ABIFLAGS);
 #endif
