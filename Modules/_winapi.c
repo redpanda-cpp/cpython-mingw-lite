@@ -2890,66 +2890,6 @@ _winapi_NeedCurrentDirectoryForExePath_impl(PyObject *module,
 }
 
 
-/*[clinic input]
-_winapi.CopyFile2
-
-    existing_file_name: LPCWSTR
-    new_file_name: LPCWSTR
-    flags: DWORD
-    progress_routine: object = None
-
-Copies a file from one name to a new name.
-
-This is implemented using the CopyFile2 API, which preserves all stat
-and metadata information apart from security attributes.
-
-progress_routine is reserved for future use, but is currently not
-implemented. Its value is ignored.
-[clinic start generated code]*/
-
-static PyObject *
-_winapi_CopyFile2_impl(PyObject *module, LPCWSTR existing_file_name,
-                       LPCWSTR new_file_name, DWORD flags,
-                       PyObject *progress_routine)
-/*[clinic end generated code: output=43d960d9df73d984 input=fb976b8d1492d130]*/
-{
-    HRESULT hr;
-    COPYFILE2_EXTENDED_PARAMETERS params = { sizeof(COPYFILE2_EXTENDED_PARAMETERS) };
-
-    if (PySys_Audit("_winapi.CopyFile2", "uuk",
-                    existing_file_name, new_file_name, flags) < 0) {
-        return NULL;
-    }
-
-    params.dwCopyFlags = flags;
-    /* For future implementation. We ignore the value for now so that
-       users only have to test for 'CopyFile2' existing and not whether
-       the additional parameter exists.
-    if (progress_routine != Py_None) {
-        params.pProgressRoutine = _winapi_CopyFile2ProgressRoutine;
-        params.pvCallbackContext = Py_NewRef(progress_routine);
-    }
-    */
-    Py_BEGIN_ALLOW_THREADS;
-    hr = CopyFile2(existing_file_name, new_file_name, &params);
-    Py_END_ALLOW_THREADS;
-    /* For future implementation.
-    if (progress_routine != Py_None) {
-        Py_DECREF(progress_routine);
-    }
-    */
-    if (FAILED(hr)) {
-        if ((hr & 0xFFFF0000) == 0x80070000) {
-            PyErr_SetFromWindowsErr(hr & 0xFFFF);
-        } else {
-            PyErr_SetFromWindowsErr(hr);
-        }
-        return NULL;
-    }
-    Py_RETURN_NONE;
-}
-
-
 static PyMethodDef winapi_functions[] = {
     _WINAPI_CLOSEHANDLE_METHODDEF
     _WINAPI_CONNECTNAMEDPIPE_METHODDEF
@@ -2995,7 +2935,6 @@ static PyMethodDef winapi_functions[] = {
     _WINAPI_GETFILETYPE_METHODDEF
     _WINAPI__MIMETYPES_READ_WINDOWS_REGISTRY_METHODDEF
     _WINAPI_NEEDCURRENTDIRECTORYFOREXEPATH_METHODDEF
-    _WINAPI_COPYFILE2_METHODDEF
     {NULL, NULL}
 };
 

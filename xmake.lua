@@ -25,7 +25,6 @@ target('pythoncore')
   set_kind('static')
   add_links(
     'bcrypt',
-    'pathcch',
     'version',
     'ws2_32')
   add_defines(

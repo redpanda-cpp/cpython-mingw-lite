@@ -33,7 +33,7 @@
 #ifdef MS_WINDOWS
 #  include <windows.h>
 #  if !defined(MS_WINDOWS_GAMES) || defined(MS_WINDOWS_DESKTOP)
-#    include <pathcch.h>
+#    include "internal/win32-thunk.h"
 #  endif
 #  include <winioctl.h>
 #  include <lmcons.h>             // UNLEN

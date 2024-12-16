@@ -7,6 +7,7 @@
 #endif
 #ifdef MS_WINDOWS
 #  include <winsock2.h>           // struct timeval
+#  include "internal/win32-thunk.h"
 #endif
 
 #if defined(__APPLE__)
