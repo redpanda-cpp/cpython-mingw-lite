@@ -19,6 +19,7 @@ option('emulated-win-cv')
 target('python')
   set_kind('binary')
   add_deps('pythoncore')
+  add_deps('stdlib')
   add_ldflags(
     '-municode',
     '-static',
@@ -49,9 +50,6 @@ target('pythoncore')
   add_installfiles(
     'python-config.sh',
     {prefixdir = ''})
-  add_installfiles(
-    'Lib/(**)|__pycache__/|test/',
-    {prefixdir = 'Lib'})
   add_files(
     'Modules/getpath.c',
     {defines = {
@@ -322,3 +320,9 @@ target('pythoncore')
     end
     os.execv('python3.12', deepfreeze_args)
   end)
+
+target('stdlib')
+  set_kind('phony')
+  add_installfiles(
+    'Lib/(**)|__pycache__/|test/',
+    {prefixdir = 'Lib'})
