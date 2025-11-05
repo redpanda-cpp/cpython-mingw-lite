@@ -33,10 +33,10 @@
 // pulled into the build automatically, and then only the CPU autodetection will
 // need to be updated here.
 
-#if defined(__x86_64__) && defined(__GNUC__)
-#include <cpuid.h>
-#elif defined(_M_X64)
+#if defined(_M_X64) || (defined(__x86_64__) && defined(__MINGW32__))
 #include <intrin.h>
+#elif defined(__x86_64__) && defined(__GNUC__)
+#include <cpuid.h>
 #endif
 
 #include <stdbool.h>
@@ -75,10 +75,7 @@ void detect_cpu_features(cpu_flags *flags) {
   if (!flags->done) {
     int eax1 = 0, ebx1 = 0, ecx1 = 0, edx1 = 0;
     int eax7 = 0, ebx7 = 0, ecx7 = 0, edx7 = 0;
-#if defined(__x86_64__) && defined(__GNUC__)
-    __cpuid_count(1, 0, eax1, ebx1, ecx1, edx1);
-    __cpuid_count(7, 0, eax7, ebx7, ecx7, edx7);
-#elif defined(_M_X64)
+#if defined(_M_X64) || (defined(__x86_64__) && defined(__MINGW32__))
     int info1[4] = { 0 };
     int info7[4] = { 0 };
     __cpuidex(info1, 1, 0);
@@ -91,6 +88,9 @@ void detect_cpu_features(cpu_flags *flags) {
     ebx7 = info7[1];
     ecx7 = info7[2];
     edx7 = info7[3];
+#elif defined(__x86_64__) && defined(__GNUC__)
+    __cpuid_count(1, 0, eax1, ebx1, ecx1, edx1);
+    __cpuid_count(7, 0, eax7, ebx7, ecx7, edx7);
 #endif
     (void) eax1; (void) ebx1; (void) ecx1; (void) edx1;
     (void) eax7; (void) ebx7; (void) ecx7; (void) edx7;

@@ -59,9 +59,7 @@ extern "C" {
 
 #include "pycore_runtime_structs.h" // _PyTimeFraction
 
-#ifdef __clang__
 struct timeval;
-#endif
 
 #define _SIZEOF_PYTIME_T 8
 

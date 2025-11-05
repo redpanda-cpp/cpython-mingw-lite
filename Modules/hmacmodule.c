@@ -24,10 +24,10 @@
  * Taken from blake2module.c. In the future, detection of SIMD support
  * should be delegated to https://github.com/python/cpython/pull/125011.
  */
-#if defined(__x86_64__) && defined(__GNUC__)
-#  include <cpuid.h>
-#elif defined(_M_X64)
-#  include <intrin.h>
+#if defined(_M_X64) && (defined(__x86_64__) && defined(__MINGW32__))
+#include <intrin.h>
+#elif defined(__x86_64__) && defined(__GNUC__)
+#include <cpuid.h>
 #endif
 
 #if defined(__APPLE__) && defined(__arm64__)
@@ -1717,10 +1717,7 @@ hmacmodule_init_cpu_features(hmacmodule_state *state)
 {
     int eax1 = 0, ebx1 = 0, ecx1 = 0, edx1 = 0;
     int eax7 = 0, ebx7 = 0, ecx7 = 0, edx7 = 0;
-#if defined(__x86_64__) && defined(__GNUC__)
-    __cpuid_count(1, 0, eax1, ebx1, ecx1, edx1);
-    __cpuid_count(7, 0, eax7, ebx7, ecx7, edx7);
-#elif defined(_M_X64)
+#if defined(_M_X64) || (defined(__x86_64__) && defined(__MINGW32__))
     int info1[4] = { 0 };
     __cpuidex(info1, 1, 0);
     eax1 = info1[0], ebx1 = info1[1], ecx1 = info1[2], edx1 = info1[3];
@@ -1728,6 +1725,9 @@ hmacmodule_init_cpu_features(hmacmodule_state *state)
     int info7[4] = { 0 };
     __cpuidex(info7, 7, 0);
     eax7 = info7[0], ebx7 = info7[1], ecx7 = info7[2], edx7 = info7[3];
+#elif defined(__x86_64__) && defined(__GNUC__)
+    __cpuid_count(1, 0, eax1, ebx1, ecx1, edx1);
+    __cpuid_count(7, 0, eax7, ebx7, ecx7, edx7);
 #endif
     // fmt: off
     (void)eax1; (void)ebx1; (void)ecx1; (void)edx1;
