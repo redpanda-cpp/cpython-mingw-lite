@@ -160,5 +160,3 @@ Python/frozen_modules/MANIFEST
 
 # redpanda-cpp: xmake for cross mingw
 /.xmake
-/zlib
-/zlib-*

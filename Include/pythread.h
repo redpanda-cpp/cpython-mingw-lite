@@ -7,6 +7,10 @@ typedef void *PyThread_type_lock;
 extern "C" {
 #endif
 
+#ifdef NT_THREADS
+#  undef _POSIX_THREADS
+#endif
+
 /* Return status codes for Python lock acquisition.  Chosen for maximum
  * backwards compatibility, ie failure -> 0, success -> 1.  */
 typedef enum PyLockStatus {
